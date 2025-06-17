@@ -224,12 +224,12 @@ def generate_certificate_pdf(
 
     # --- PROVISIONAL exactly above TO WHOMSOEVER ---
     if cert_type and cert_type.lower() == "provisional":
-        pdf.set_font("Times", "B", 16)
+        pdf.set_font("Times", "B", 12)
         pdf.cell(0, 10, "PROVISIONAL CERTIFICATE", align='C', ln=1)
         pdf.ln(2)  # Small gap
 
     # Main Heading
-    pdf.set_font("Times", "B", 12)
+    pdf.set_font("Times", "B", 14)
     pdf.cell(0, 5, "TO WHOMSOEVER IT MAY CONCERN", align='C', ln=1)
     pdf.ln(15)
 
