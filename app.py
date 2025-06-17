@@ -399,7 +399,7 @@ def generate_certificates_for_approved(user_id, org, sig_path, seal_path, logo_p
     )
 
 def main():
-    st.title("Internship Certificate Generator")
+    st.title("Certificate Generator")
     if 'logged_in' not in st.session_state:
         st.session_state['logged_in'] = False
 
