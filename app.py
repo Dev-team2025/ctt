@@ -427,7 +427,7 @@ def main():
         return
 
     st.sidebar.success(f"Logged in as {st.session_state['username']}")
-    menu = st.sidebar.radio("Actions", ["Upload & Generate Certificates", "Download Approved Certificates", "Logout"])
+    menu = st.sidebar.radio("Actions", ["Upload & Generate Certificates", "Logout"])
 
     if menu == "Logout":
         st.session_state['logged_in'] = False
