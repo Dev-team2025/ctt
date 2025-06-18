@@ -210,8 +210,6 @@ def generate_certificate_pdf(
     current_y += 18
     pdf.set_y(current_y)
     pdf.ln(8)
-
-    # Certificate ID and Issue Date
     pdf.set_font("Times", "", 12)
     pdf.set_x(left_margin)
     pdf.cell(0, 5, f"Certificate ID: {cert_id}", align='L')
@@ -402,7 +400,6 @@ def main():
     st.title("Certificate Generator")
     if 'logged_in' not in st.session_state:
         st.session_state['logged_in'] = False
-
     if not st.session_state['logged_in']:
         menu = st.sidebar.selectbox("Menu", ["Login", "Register"])
         if menu == "Register":
