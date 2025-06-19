@@ -231,7 +231,7 @@ def generate_certificate_pdf(
     # Main Heading
     pdf.set_font("Arial", "B", 14)
     pdf.cell(0, 10, "TO WHOMSOEVER IT MAY CONCERN", align='C', ln=1)
-    pdf.ln(15)
+    pdf.ln(10)
 
     # Certificate Body (conditional)
     pdf.set_font("Arial", "", 12)
