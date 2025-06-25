@@ -66,7 +66,8 @@ DOMAIN_SHORTFORMS = {
     "Web Development": "WD",
     "Cybersecurity": "CS",
     "Java Full Stack": "JFSD",
-    "AIML": "AIML"
+    "Artificial Intelligence": "AIML",
+    "Internet of Things":"IOT"
 }
 
 # ---------- FLEXIBLE COLUMN MAPPING AND DATE FIX ----------
@@ -121,10 +122,15 @@ def map_and_clean_columns(df):
             mapped_df[date_col] = mapped_df[date_col].apply(parse_date_safe)
     return mapped_df
 
-def generate_certificate_id(domain_short, usn, date_obj):
-    month_short = date_obj.strftime("%b").upper()
-    year_short = date_obj.strftime("%y")
-    return f"DL{domain_short}{usn}{month_short}{year_short}"
+def generate_certificate_id(domain_short, usn, date_obj, org):
+    month_short = date_obj.strftime("%b").upper()  # e.g., 'Jun' → 'JUN'
+    year_short = date_obj.strftime("%y")           # e.g., 2025 → '25'
+    if str(org).lower() == "nxtalign":
+        return f"NXT{domain_short}{usn}{month_short}{year_short}"
+    else:
+        return f"DL{domain_short}{usn}{month_short}{year_short}"
+
+
 
 def clean_text(text):
     if not isinstance(text, str):
@@ -165,7 +171,7 @@ def generate_certificate_pdf(
     border_width = page_width - 2 * border_margin
     border_height = page_height - 2 * border_margin
     pdf.set_line_width(0.5)
-    pdf.set_draw_color(0, 0, 0)
+    pdf.set_draw_color(255,255,255)
     pdf.rect(border_margin, border_margin, border_width, border_height)
 
     left_margin = border_margin + 8
@@ -191,28 +197,28 @@ def generate_certificate_pdf(
     if org == "DLithe":
         org_name = "DLithe Consultancy Services Pvt. Ltd."
         org_cin = "CIN: U72900KA2019PTC121035"
-        org_footer1 = "Registered office: #51, 1st Main, 6th Block, 3rd Phase, BSK 3rd Stage, Bangalore - 85"
-        org_footer2 = "M: 9008815252 | www.dlithe.com | info@dlithe.com"
+        org_footer1 = "Registered office: #51, 1st Main, 6th Block, 3rd Phase, BSK 3rd Stage, Bangaluru -560085"
+        org_footer2 = "Development Centeres: Ujire | Moodabidre | Manipal | Mangaluru | Belagavi"
+        org_footer3 = "M: 9008815252 | www.dlithe.com | info@dlithe.com"
         for_text = "For DLithe Consultancy Services Pvt. Ltd."
     else:
         org_name = "nxtAlign Innovation Pvt.Ltd."
         org_cin = "CIN: U73100KA2022PTC165879"
         org_footer1 = "Registered office: H No.4061/B 01,Near Chidambar Ashram Health Camp Betageri,Gadag KA 582102"
-        org_footer2 = "M: 8553300781 | www.nxtalign.com | nxtalign@gmail.com"
+        org_footer2 = "Development Centeres: Ujire | AIC NITTE"
+        org_footer3 = "M: 8553300781 | www.nxtalign.com | nxtalign@gmail.com"
         for_text = "For nxtAlign Innovation Pvt.Ltd."
 
     pdf.set_xy(left_margin + 40, current_y)
-    pdf.set_font("Times", "B", 14)
+    pdf.set_font("Arial", "B", 14)
     pdf.cell(page_width - left_margin - right_margin - 40, 8, org_name, align='R', ln=1)
-    pdf.set_font("Times", "", 12)
+    pdf.set_font("Arial", "", 12)
     pdf.set_x(left_margin + 40)
     pdf.cell(page_width - left_margin - right_margin - 40, 6, org_cin, align='R', ln=1)
     current_y += 18
     pdf.set_y(current_y)
     pdf.ln(8)
-
-    # Certificate ID and Issue Date
-    pdf.set_font("Times", "", 12)
+    pdf.set_font("Arial", "", 12)
     pdf.set_x(left_margin)
     pdf.cell(0, 5, f"Certificate ID: {cert_id}", align='L')
     issued_on_text = f"Issued on: {end_date_str}"
@@ -224,17 +230,17 @@ def generate_certificate_pdf(
 
     # --- PROVISIONAL exactly above TO WHOMSOEVER ---
     if cert_type and cert_type.lower() == "provisional":
-        pdf.set_font("Times", "B", 16)
+        pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "PROVISIONAL CERTIFICATE", align='C', ln=1)
         pdf.ln(2)  # Small gap
 
     # Main Heading
-    pdf.set_font("Times", "B", 12)
-    pdf.cell(0, 5, "TO WHOMSOEVER IT MAY CONCERN", align='C', ln=1)
-    pdf.ln(15)
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 10, "TO WHOMSOEVER IT MAY CONCERN", align='C', ln=1)
+    pdf.ln(10)
 
     # Certificate Body (conditional)
-    pdf.set_font("Times", "", 12)
+    pdf.set_font("Arial", "", 12)
     effective_width = page_width - left_margin - right_margin
     pdf.set_x(left_margin)
 
@@ -243,14 +249,18 @@ def generate_certificate_pdf(
             f"This is to certify Mr/Ms, {name} bearing USN No: {usn} from {college} "
             f"is currently undergoing a 15-week internship starting from {start_date_str} "
             f"to {end_date_str}, under the mentorship of {org}'s development team. "
-            f"{name} is working on {topic}."
+            f"{name} is working on {topic}.\n"
+            f"The domain & agile development process exposure was given along with usage of GitHub tool.\n"
+            f"During the internship,{name} demonstrated good coding skills with good design thoughts."
         )
     else:
         para1 = clean_text(
             f"This is to certify Mr/Ms, {name} bearing USN No: {usn} from {college} "
             f"has successfully completed a 15-week internship starting from {start_date_str} "
             f"to {end_date_str}, under the mentorship of {org}'s development team. "
-            f"{name} has worked on {topic}."
+            f"{name} has worked on {topic}.\n"
+            f"The domain & agile development process exposure was given along with usage of GitHub tool.\n"
+            f"During the internship,{name} demonstrated good coding skills with good design thoughts."
         )
 
     pdf.multi_cell(effective_width, 6, para1, align='J')
@@ -264,7 +274,7 @@ def generate_certificate_pdf(
     min_sign_y = page_height - bottom_margin - 60  # 20mm higher than before
     y_sign_start = max(content_end_y + 10, min_sign_y)
 
-    pdf.set_font("Times", "", 12)
+    pdf.set_font("Arial", "", 12)
     pdf.set_xy(page_width - right_margin - pdf.get_string_width(for_text), y_sign_start)
     pdf.cell(pdf.get_string_width(for_text), 7, for_text, align='L')
 
@@ -294,18 +304,19 @@ def generate_certificate_pdf(
 
     # Director label
     director_y = sign_y + sign_height + 5.0
-    pdf.set_font("Times", "", 12)
+    pdf.set_font("Arial", "", 12)
     director_text_width = pdf.get_string_width("Director")
     director_x = page_width - right_margin - sign_width + (sign_width - director_text_width) / 2
     pdf.text(director_x, director_y, "Director")
 
     # Footer
-    pdf.set_font("Times", "", 9)
+    pdf.set_font("Arial", "", 9)
     footer_y = page_height - bottom_margin - 10
     pdf.set_y(footer_y)
     pdf.set_x(0)
     pdf.cell(0, 5, org_footer1, align='C', ln=1)
     pdf.cell(0, 5, org_footer2, align='C', ln=1)
+    pdf.cell(0, 5, org_footer3, align='C', ln=1)
 
     pdf_bytes = pdf.output(dest='S').encode('latin-1')
     return pdf_bytes
@@ -317,9 +328,9 @@ def insert_certificate_data(user_id, row, org):
         session.execute(
             text(f"""
                 INSERT INTO {table} (
-                    user_id, name, usn, college, email, phone, registered, start_date, end_date, program, mode, payment_status, certificate_issued_date, intern_id, topic, cert_id, domain, status
+                    user_id, name, usn, college, email, phone, registered, start_date, end_date, program, mode, payment_status, certificate_issued_date, topic, domain, status
                 ) VALUES (
-                    :user_id, :name, :usn, :college, :email, :phone, :registered, :start_date, :end_date, :program, :mode, :payment_status, :certificate_issued_date, :intern_id, :topic, :cert_id, :domain, 'pending_review'
+                    :user_id, :name, :usn, :college, :email, :phone, :registered, :start_date, :end_date, :program, :mode, :payment_status, :certificate_issued_date, :topic, :domain, 'pending_review'
                 )
             """),
             {
@@ -336,9 +347,9 @@ def insert_certificate_data(user_id, row, org):
                 "mode": row["Mode"],
                 "payment_status": row["Payment Status"],
                 "certificate_issued_date": row["Certificate Issued Date"],
-                "intern_id": row["Intern ID"],
+                # "intern_id": row["Intern ID"],
                 "topic": row["Topic"],
-                "cert_id": row["Certificate ID"],
+                # "cert_id": row["Certificate ID"],
                 "domain": row.get("Domain", "")
             }
         )
@@ -398,8 +409,10 @@ def generate_certificates_for_approved(user_id, org, sig_path, seal_path, logo_p
         mime="application/zip"
     )
 
+
 def main():
-    st.title("Internship Certificate Generator")
+    st.title("Certificate Generator")
+
     if 'logged_in' not in st.session_state:
         st.session_state['logged_in'] = False
 
@@ -412,6 +425,7 @@ def main():
             password = st.text_input("Password", type="password", key="reg_pass")
             if st.button("Register"):
                 register_user(username, email, password)
+
         elif menu == "Login":
             st.subheader("Login to Your Account")
             username = st.text_input("Username", key="login_user")
@@ -427,7 +441,7 @@ def main():
         return
 
     st.sidebar.success(f"Logged in as {st.session_state['username']}")
-    menu = st.sidebar.radio("Actions", ["Upload & Generate Certificates", "Download Approved Certificates", "Logout"])
+    menu = st.sidebar.radio("Actions", ["Upload & Generate Certificates", "Logout", "Download Approved Certificates"])
 
     if menu == "Logout":
         st.session_state['logged_in'] = False
@@ -464,7 +478,8 @@ def main():
                             cert_id = generate_certificate_id(
                                 DOMAIN_SHORTFORMS[domain],
                                 row["USN"],
-                                pd.to_datetime(row["End Date"])
+                                pd.to_datetime(row["End Date"]),
+                                org
                             )
                             pdf_bytes = generate_certificate_pdf(
                                 name=row["Name"],
@@ -488,12 +503,18 @@ def main():
                             st.error(f"Error generating certificate for {row['Name']}: {str(e)}")
 
                 zip_buffer.seek(0)
-                # Program name for ZIP file name
-                program_name = cleaned_df["Program"].iloc[0] if "Program" in cleaned_df.columns and not cleaned_df["Program"].isnull().all() else "Certificates"
+
+                if "Program" in cleaned_df.columns and not cleaned_df["Program"].isnull().all():
+                    program_name = str(cleaned_df["Program"].iloc[0])
+                else:
+                    program_name = "Certificates"
+
                 now_str = datetime.now().strftime("%Y%m%d_%H%M%S")
-                zip_filename = f"{program_name}_{now_str}.zip".replace(" ", "_")
+                zip_filename = f"{org}_{program_name}_{now_str}.zip".replace(" ", "_")
+
                 st.session_state['zip_buffer'] = zip_buffer.getvalue()
                 st.session_state['zip_filename'] = zip_filename
+                st.success("Certificates generated successfully!")
 
             if 'zip_buffer' in st.session_state and st.session_state['zip_buffer']:
                 st.download_button(
@@ -513,3 +534,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
