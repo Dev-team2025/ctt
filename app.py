@@ -250,7 +250,7 @@ def generate_certificate_pdf(
             f"is currently undergoing a 15-week internship starting from {start_date_str} "
             f"to {end_date_str}, under the mentorship of {org}'s development team. "
             f"{name} is working on {topic}.\n"
-            f"The domain & agile development process exposure was given along with usage of GitHub tool.\n"
+            f"Exposure was provided to domain knowledge, agile development processes, and the use of GitHub as a version control tool.\n"
             f"During the internship,{name} demonstrated good coding skills with good design thoughts."
         )
     else:
@@ -259,7 +259,7 @@ def generate_certificate_pdf(
             f"has successfully completed a 15-week internship starting from {start_date_str} "
             f"to {end_date_str}, under the mentorship of {org}'s development team. "
             f"{name} has worked on {topic}.\n"
-            f"The domain & agile development process exposure was given along with usage of GitHub tool.\n"
+            f"Exposure was provided to domain knowledge, agile development processes, and the use of GitHub as a version control tool.\n"
             f"During the internship,{name} demonstrated good coding skills with good design thoughts."
         )
 
@@ -441,7 +441,7 @@ def main():
         return
 
     st.sidebar.success(f"Logged in as {st.session_state['username']}")
-    menu = st.sidebar.radio("Actions", ["Upload & Generate Certificates", "Logout", "Download Approved Certificates"])
+    menu = st.sidebar.radio("Actions", ["Upload & Generate Certificates", "Logout"])
 
     if menu == "Logout":
         st.session_state['logged_in'] = False
