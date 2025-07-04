@@ -250,7 +250,7 @@ def generate_certificate_pdf(
             f"is currently undergoing a {duration} {activity_type.lower()} starting from {start_date_str} "
             f"to {end_date_str}, under the mentorship of {org}'s development team. "
             f"{name} is working on {topic}.\n\n"
-            f"Exposure was provided to domain knowledge, agile development processes, and the use of GitHub as a version control tool.\n"
+            f"The domain & agile development process exposure was given along with usage of GitHub tool.\n"
             f"During the {activity_type.lower()}, {name} demonstrated good coding skills with sound design thinking."
         )
     else:
@@ -259,7 +259,7 @@ def generate_certificate_pdf(
             f"has successfully completed a {duration} {activity_type.lower()} starting from {start_date_str} "
             f"to {end_date_str}, under the mentorship of {org}'s development team. "
             f"{name} has worked on {topic}.\n\n"
-            f"Exposure was provided to domain knowledge, agile development processes, and the use of GitHub as a version control tool.\n\n"
+            f"The domain & agile development process exposure was given along with usage of GitHub tool.\n\n"
             f"During the {activity_type.lower()}, {name} demonstrated good coding skills with sound design thinking."
         )
 
